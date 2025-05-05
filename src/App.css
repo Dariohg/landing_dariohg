@@ -5,38 +5,154 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Animaciones para el scroll indicator */
+@keyframes scrollIndicator {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, 15px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 30px);
+  }
 }
 
-@keyframes logo-spin {
+/* Animación de entrada suave */
+@keyframes fadeInUp {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* Animación de escala */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
+/* Hover suave para todos los botones */
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+/* Transiciones suaves para imágenes */
+img {
+  transition: transform 0.3s ease;
+}
+
+/* Scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ocultar scrollbar pero mantener funcionalidad */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--chakra-colors-beige-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--chakra-colors-beige-400);
+}
+
+/* Animación para elementos flotantes */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Efecto de parallax sutil */
+.parallax {
+  position: relative;
+  overflow: hidden;
+}
+
+.parallax::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-attachment: fixed;
+  transform: translateZ(-1px) scale(1.5);
+}
+
+/* Animación de pulso para elementos importantes */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(232, 217, 192, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(232, 217, 192, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 217, 192, 0);
+  }
+}
+
+/* Hover para tarjetas */
 .card {
+  transition: all 0.3s ease;
   padding: 2em;
 }
 
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el texto de documentación */
 .read-the-docs {
   color: #888;
+}
+
+/* Animación de gradiente */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

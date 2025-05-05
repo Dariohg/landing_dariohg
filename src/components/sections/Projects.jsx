@@ -8,13 +8,14 @@ import {
     VStack,
     HStack,
     Tag,
-    Link,
     IconButton,
     useBreakpointValue,
+    Flex,
 } from '@chakra-ui/react';
 import { FiGithub, FiExternalLink } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import useScrollAnimation from '../../hooks/useScrollAnimation';
+import React from "react";
 
 const getPlaceholderImage = (text) => `https://placehold.co/600x400/e8d9c0/564a32?text=${encodeURIComponent(text)}`;
 
@@ -55,13 +56,15 @@ const PROJECTS = [
     },
 ];
 
-// Componente de tarjeta de proyecto
+// Componente de tarjeta de proyecto mejorado
 const ProjectCard = ({ title, description, image, tags, githubUrl, liveUrl }) => {
+    const [isHovered, setIsHovered] = React.useState(false);
+
     const { ref, controls, variants } = useScrollAnimation({
-        threshold: 0.1,
+        threshold: 0.2,
         animation: {
-            hidden: { opacity: 0, y: 30 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+            hidden: { opacity: 0, y: 50 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
         }
     });
 
@@ -71,36 +74,115 @@ const ProjectCard = ({ title, description, image, tags, githubUrl, liveUrl }) =>
             initial="hidden"
             animate={controls}
             variants={variants}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            position="relative"
             bg="white"
-            borderRadius="lg"
+            borderRadius="xl"
             overflow="hidden"
-            boxShadow="md"
-            transition="all 0.3s ease"
-            _hover={{ transform: 'translateY(-5px)', boxShadow: 'lg' }}
+            boxShadow="lg"
+            transition="all 0.3s ease-in-out"
+            transform={isHovered ? 'translateY(-8px)' : 'translateY(0)'}
+            _hover={{
+                boxShadow: '2xl',
+            }}
         >
-            <Box position="relative" overflow="hidden">
+            {/* Contenedor de imagen con overlay */}
+            <Box position="relative" overflow="hidden" height="240px">
                 <Image
                     src={image}
                     alt={title}
                     w="100%"
-                    h="220px"
+                    h="100%"
                     objectFit="cover"
-                    transition="transform 0.5s ease"
-                    _groupHover={{ transform: 'scale(1.05)' }}
+                    transition="transform 0.6s ease-in-out"
+                    transform={isHovered ? 'scale(1.1)' : 'scale(1)'}
                     fallbackSrc="https://placehold.co/600x400/e8d9c0/564a32?text=Imagen+no+disponible"
                 />
+
+                {/* Overlay oscuro */}
+                <Box
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    right="0"
+                    bottom="0"
+                    bg="blackAlpha.600"
+                    opacity={isHovered ? 1 : 0}
+                    transition="opacity 0.3s ease-in-out"
+                />
+
+                {/* Botones de acción */}
+                <Flex
+                    position="absolute"
+                    top="0"
+                    left="0"
+                    right="0"
+                    bottom="0"
+                    align="center"
+                    justify="center"
+                    gap={4}
+                    opacity={isHovered ? 1 : 0}
+                    transition="opacity 0.3s ease-in-out"
+                >
+                    <IconButton
+                        aria-label="Ver código en GitHub"
+                        icon={<FiGithub />}
+                        size="lg"
+                        colorScheme="whiteAlpha"
+                        bg="white"
+                        color="gray.800"
+                        _hover={{ bg: 'gray.100' }}
+                        as="a"
+                        href={githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        transition="all 0.2s ease-in-out"
+                        transform={isHovered ? 'translateY(0)' : 'translateY(10px)'}
+                    />
+                    {liveUrl !== '#' && (
+                        <IconButton
+                            aria-label="Visitar sitio web"
+                            icon={<FiExternalLink />}
+                            size="lg"
+                            colorScheme="whiteAlpha"
+                            bg="white"
+                            color="gray.800"
+                            _hover={{ bg: 'gray.100' }}
+                            as="a"
+                            href={liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            transition="all 0.3s ease-in-out"
+                            transform={isHovered ? 'translateY(0)' : 'translateY(10px)'}
+                        />
+                    )}
+                </Flex>
             </Box>
 
+            {/* Contenido */}
             <Box p={6}>
-                <Heading as="h3" size="md" mb={2} color="beige.900">
+                <Heading
+                    as="h3"
+                    size="md"
+                    mb={3}
+                    color="gray.800"
+                    transition="color 0.3s ease-in-out"
+                >
                     {title}
                 </Heading>
 
-                <Text color="beige.700" mb={4} noOfLines={3}>
+                <Text
+                    color="gray.600"
+                    mb={4}
+                    noOfLines={3}
+                    fontSize="sm"
+                    lineHeight="tall"
+                >
                     {description}
                 </Text>
 
-                <HStack spacing={2} mb={4} flexWrap="wrap">
+                <HStack spacing={2} flexWrap="wrap">
                     {tags.map((tag, index) => (
                         <Tag
                             key={index}
@@ -108,37 +190,19 @@ const ProjectCard = ({ title, description, image, tags, githubUrl, liveUrl }) =>
                             bg="beige.100"
                             color="beige.800"
                             mb={1}
+                            borderRadius="full"
+                            fontSize="xs"
+                            px={3}
+                            py={1}
+                            transition="all 0.2s ease-in-out"
+                            _hover={{
+                                bg: 'beige.200',
+                                transform: 'translateY(-2px)'
+                            }}
                         >
                             {tag}
                         </Tag>
                     ))}
-                </HStack>
-
-                <HStack spacing={3} justify="flex-end">
-                    <IconButton
-                        aria-label="Ver código en GitHub"
-                        icon={<FiGithub />}
-                        size="sm"
-                        variant="ghost"
-                        color="beige.700"
-                        as="a"
-                        href={githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    />
-                    {liveUrl !== '#' && (
-                        <IconButton
-                            aria-label="Visitar sitio web"
-                            icon={<FiExternalLink />}
-                            size="sm"
-                            variant="ghost"
-                            color="beige.700"
-                            as="a"
-                            href={liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        />
-                    )}
                 </HStack>
             </Box>
         </MotionBox>
@@ -153,7 +217,7 @@ const Projects = () => {
             visible: {
                 opacity: 1,
                 transition: {
-                    staggerChildren: 0.1
+                    staggerChildren: 0.2
                 }
             }
         }
@@ -162,16 +226,58 @@ const Projects = () => {
     const columns = useBreakpointValue({ base: 1, md: 2, lg: 2 });
 
     return (
-        <Box id="projects" py={20} bg="beige.100">
-            <Container maxW="container.xl">
-                <VStack spacing={4} mb={12} align="center">
+        <Box
+            id="projects"
+            py={20}
+            bg="beige.50"
+            position="relative"
+            overflow="hidden"
+        >
+            {/* Elementos decorativos de fondo */}
+            <Box
+                position="absolute"
+                top="10%"
+                left="-5%"
+                width="200px"
+                height="200px"
+                borderRadius="full"
+                bg="beige.200"
+                opacity="0.1"
+                filter="blur(40px)"
+            />
+            <Box
+                position="absolute"
+                bottom="20%"
+                right="-5%"
+                width="300px"
+                height="300px"
+                borderRadius="full"
+                bg="beige.300"
+                opacity="0.1"
+                filter="blur(60px)"
+            />
+
+            <Container maxW="container.xl" position="relative">
+                <VStack spacing={4} mb={16} align="center">
                     <Heading
                         as="h2"
                         size="2xl"
                         textAlign="center"
-                        color="beige.900"
+                        color="gray.800"
                         fontWeight="bold"
                         letterSpacing="-0.02em"
+                        position="relative"
+                        _after={{
+                            content: '""',
+                            position: 'absolute',
+                            bottom: '-10px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            width: '60px',
+                            height: '4px',
+                            bg: 'beige.500',
+                            borderRadius: 'full'
+                        }}
                     >
                         Proyectos
                     </Heading>
@@ -179,7 +285,8 @@ const Projects = () => {
                         fontSize="xl"
                         textAlign="center"
                         maxW="800px"
-                        color="beige.800"
+                        color="gray.600"
+                        mt={4}
                     >
                         Estos son los proyectos en los que he trabajado recientemente.
                     </Text>
@@ -191,7 +298,7 @@ const Projects = () => {
                     animate={controls}
                     variants={variants}
                 >
-                    <SimpleGrid columns={columns} spacing={8} mt={8}>
+                    <SimpleGrid columns={columns} spacing={8}>
                         {PROJECTS.map((project, index) => (
                             <ProjectCard key={index} {...project} />
                         ))}
