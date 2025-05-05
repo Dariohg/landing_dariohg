@@ -79,27 +79,60 @@ const AnimatedIllustration = () => {
             alignItems="center"
             justifyContent="center"
         >
+            {/* Círculos de fondo con efecto de neón */}
+            <MotionBox
+                position="absolute"
+                width={{ base: "300px", md: "400px", lg: "500px" }}
+                height={{ base: "300px", md: "400px", lg: "500px" }}
+                borderRadius="full"
+                bg="transparent"
+                border="2px solid"
+                borderColor="beige.200"
+                opacity={0.3}
+                animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [0.3, 0.5, 0.3],
+                }}
+                transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                }}
+            />
+
             {/* Círculo principal con gradiente */}
             <MotionBox
                 position="absolute"
                 width={{ base: "250px", md: "350px", lg: "450px" }}
                 height={{ base: "250px", md: "350px", lg: "450px" }}
                 borderRadius="full"
-                bgGradient="linear(to-br, beige.200, beige.400)"
+                bgGradient="linear(135deg, beige.200, beige.400)"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 1, delay: 0.2 }}
                 boxShadow="0 0 60px rgba(0,0,0,0.1)"
+                _after={{
+                    content: '""',
+                    position: 'absolute',
+                    inset: '-2px',
+                    borderRadius: 'full',
+                    padding: '2px',
+                    background: 'linear-gradient(135deg, beige.300, beige.500)',
+                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                    WebkitMaskComposite: 'xor',
+                    maskComposite: 'exclude'
+                }}
             />
 
-            {/* Círculo secundario rotatorio */}
+            {/* Patrón de puntos animado */}
             <MotionBox
                 position="absolute"
-                width={{ base: "180px", md: "250px", lg: "350px" }}
-                height={{ base: "180px", md: "250px", lg: "350px" }}
+                width={{ base: "200px", md: "300px", lg: "400px" }}
+                height={{ base: "200px", md: "300px", lg: "400px" }}
                 borderRadius="full"
-                border="3px dashed"
-                borderColor="beige.300"
+                opacity={0.1}
+                bgImage="radial-gradient(circle at 2px 2px, beige.500 1px, transparent 1px)"
+                bgSize="20px 20px"
                 variants={rotatingVariants}
                 animate="rotate"
             />
@@ -149,33 +182,84 @@ const AnimatedIllustration = () => {
                     width="60%"
                     height="60%"
                     borderRadius="md"
-                    bg="beige.400"
+                    bgGradient="linear(to-br, beige.400, beige.500)"
                 />
             </MotionBox>
 
-            {/* Partículas decorativas */}
-            {[...Array(6)].map((_, i) => (
-                <MotionBox
-                    key={i}
-                    position="absolute"
-                    width={{ base: "4px", md: "6px" }}
-                    height={{ base: "4px", md: "6px" }}
-                    borderRadius="full"
-                    bg="beige.300"
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{
-                        scale: [0, 1, 0],
-                        opacity: [0, 1, 0],
-                        x: Math.random() * 400 - 200,
-                        y: Math.random() * 400 - 200,
-                    }}
-                    transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        delay: i * 0.4,
-                    }}
-                />
-            ))}
+            {/* Elementos de diseño adicionales */}
+            <MotionBox
+                position="absolute"
+                top={{ base: "30%", md: "25%" }}
+                right={{ base: "5%", md: "10%" }}
+                width={{ base: "40px", md: "60px" }}
+                height={{ base: "40px", md: "60px" }}
+                borderRadius="lg"
+                border="2px solid"
+                borderColor="beige.300"
+                opacity={0.5}
+                transform="rotate(45deg)"
+                animate={{
+                    scale: [1, 1.2, 1],
+                    rotate: [45, 90, 45],
+                }}
+                transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                }}
+            />
+
+            {/* Partículas decorativas en patrones */}
+            {[...Array(12)].map((_, i) => {
+                const angle = (i * 30) * (Math.PI / 180);
+                const radius = 180 + Math.random() * 50;
+                return (
+                    <MotionBox
+                        key={i}
+                        position="absolute"
+                        width={{ base: "4px", md: "6px" }}
+                        height={{ base: "4px", md: "6px" }}
+                        borderRadius="full"
+                        bg="beige.300"
+                        initial={{
+                            scale: 0,
+                            opacity: 0,
+                            x: Math.cos(angle) * radius,
+                            y: Math.sin(angle) * radius
+                        }}
+                        animate={{
+                            scale: [0, 1, 0],
+                            opacity: [0, 0.7, 0],
+                        }}
+                        transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            delay: i * 0.2,
+                            ease: "easeInOut"
+                        }}
+                    />
+                );
+            })}
+
+            {/* Líneas decorativas */}
+            <MotionBox
+                position="absolute"
+                width="200%"
+                height="1px"
+                bg="beige.200"
+                opacity={0.2}
+                left="-50%"
+                top="50%"
+                transformOrigin="center"
+                animate={{
+                    rotate: [0, 360],
+                }}
+                transition={{
+                    duration: 30,
+                    repeat: Infinity,
+                    ease: "linear"
+                }}
+            />
         </MotionBox>
     );
 };
@@ -194,6 +278,65 @@ const Hero = () => {
             position="relative"
             overflow="hidden"
         >
+            {/* Patrón de fondo mejorado */}
+            <Box
+                position="absolute"
+                top="0"
+                left="0"
+                right="0"
+                bottom="0"
+                opacity="0.05"
+                bgImage={`
+                    radial-gradient(circle at 50% 50%, beige.300 1px, transparent 1px),
+                    radial-gradient(circle at 0% 0%, beige.300 1px, transparent 1px)
+                `}
+                bgSize="50px 50px, 25px 25px"
+                bgPosition="0 0, 25px 25px"
+            />
+
+            {/* Elementos decorativos de fondo */}
+            <Box
+                position="absolute"
+                top="-10%"
+                left="-10%"
+                width="40%"
+                height="40%"
+                borderRadius="full"
+                bg="beige.200"
+                opacity="0.1"
+                filter="blur(100px)"
+            />
+            <Box
+                position="absolute"
+                bottom="-20%"
+                right="-10%"
+                width="50%"
+                height="50%"
+                borderRadius="full"
+                bg="beige.300"
+                opacity="0.1"
+                filter="blur(120px)"
+            />
+
+            {/* Líneas decorativas animadas */}
+            <MotionBox
+                position="absolute"
+                top="20%"
+                left="0"
+                width="100%"
+                height="1px"
+                bg="linear-gradient(90deg, transparent, beige.200, transparent)"
+                opacity={0.3}
+                animate={{
+                    x: [-1000, 1000],
+                }}
+                transition={{
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "linear"
+                }}
+            />
+
             {/* Fondo animado con partículas */}
             <Box
                 position="absolute"
@@ -204,20 +347,22 @@ const Hero = () => {
                 zIndex="0"
                 opacity="0.3"
             >
-                {[...Array(20)].map((_, i) => (
+                {[...Array(30)].map((_, i) => (
                     <MotionBox
                         key={i}
                         position="absolute"
-                        width="2px"
-                        height="2px"
+                        width={Math.random() * 3 + 1 + "px"}
+                        height={Math.random() * 3 + 1 + "px"}
                         borderRadius="full"
                         bg="beige.400"
                         initial={{
                             x: Math.random() * window.innerWidth,
                             y: Math.random() * window.innerHeight,
+                            opacity: Math.random() * 0.5 + 0.2
                         }}
                         animate={{
                             y: [null, -window.innerHeight - 100],
+                            opacity: [null, 0]
                         }}
                         transition={{
                             duration: Math.random() * 10 + 10,
@@ -249,13 +394,24 @@ const Hero = () => {
                             textAlign={{ base: "center", lg: "left" }}
                         >
                             <MotionBox variants={itemVariants} mb={6}>
-                                <Text
-                                    fontSize="lg"
-                                    color="beige.700"
-                                    fontWeight="medium"
+                                <Box
+                                    display="inline-block"
+                                    px={4}
+                                    py={2}
+                                    bg="beige.100"
+                                    borderRadius="full"
+                                    mb={4}
                                 >
-                                    ¡Hola! Soy
-                                </Text>
+                                    <Text
+                                        fontSize="sm"
+                                        color="beige.700"
+                                        fontWeight="medium"
+                                        textTransform="uppercase"
+                                        letterSpacing="wider"
+                                    >
+                                        ¡Hola! Bienvenido a mi portafolio
+                                    </Text>
+                                </Box>
                             </MotionBox>
 
                             <MotionHeading
@@ -281,16 +437,31 @@ const Hero = () => {
                                 </MotionBox>
                             </MotionHeading>
 
-                            <MotionText
-                                fontSize={{ base: 'lg', md: 'xl' }}
-                                color="beige.800"
-                                mb={8}
-                                maxW="550px"
+                            <MotionBox
                                 variants={itemVariants}
+                                maxW="550px"
+                                mb={8}
                             >
-                                Especializado en crear experiencias web modernas e intuitivas.
-                                Mi pasión es construir soluciones digitales elegantes para problemas complejos.
-                            </MotionText>
+                                <Text
+                                    fontSize={{ base: 'lg', md: 'xl' }}
+                                    color="beige.800"
+                                    position="relative"
+                                    _before={{
+                                        content: '""',
+                                        position: 'absolute',
+                                        left: '-20px',
+                                        top: '0',
+                                        height: '100%',
+                                        width: '3px',
+                                        bg: 'beige.400',
+                                        borderRadius: 'full'
+                                    }}
+                                    pl={4}
+                                >
+                                    Especializado en crear experiencias web modernas e intuitivas.
+                                    Mi pasión es construir soluciones digitales elegantes para problemas complejos.
+                                </Text>
+                            </MotionBox>
 
                             <MotionStack
                                 direction={{ base: 'column', sm: 'row' }}
@@ -302,10 +473,25 @@ const Hero = () => {
                                     size="lg"
                                     bg="beige.500"
                                     color="gray.800"
+                                    position="relative"
+                                    overflow="hidden"
+                                    _before={{
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: '0',
+                                        left: '-100%',
+                                        width: '100%',
+                                        height: '100%',
+                                        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                                        transition: 'left 0.5s'
+                                    }}
                                     _hover={{
                                         bg: 'beige.600',
                                         transform: 'translateY(-2px)',
                                         boxShadow: 'lg',
+                                        _before: {
+                                            left: '100%'
+                                        }
                                     }}
                                     transition="all 0.3s"
                                     onClick={() => {
@@ -327,10 +513,13 @@ const Hero = () => {
                                     borderColor="beige.500"
                                     color="beige.700"
                                     size="lg"
+                                    position="relative"
+                                    overflow="hidden"
                                     _hover={{
                                         bg: 'beige.50',
                                         transform: 'translateY(-2px)',
                                         boxShadow: 'lg',
+                                        borderColor: 'beige.600'
                                     }}
                                     transition="all 0.3s"
                                     as="a"

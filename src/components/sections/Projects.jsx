@@ -11,6 +11,7 @@ import {
     IconButton,
     useBreakpointValue,
     Flex,
+    Badge,
 } from '@chakra-ui/react';
 import { FiGithub, FiExternalLink } from 'react-icons/fi';
 import { motion } from 'framer-motion';
@@ -29,6 +30,8 @@ const PROJECTS = [
         tags: ['React', 'Node.js', 'MongoDB', 'React Native'],
         githubUrl: 'https://github.com/Dariohg/Groovit_web.git',
         liveUrl: '#',
+        featured: true,
+        category: 'Web App'
     },
     {
         title: 'DUOTASK',
@@ -37,6 +40,7 @@ const PROJECTS = [
         tags: ['React', 'Node.js', 'Express', 'MySQL'],
         githubUrl: 'https://github.com/Dariohg/DUOTASK-front.git',
         liveUrl: '#',
+        category: 'Web App'
     },
     {
         title: 'Free Garden',
@@ -45,6 +49,8 @@ const PROJECTS = [
         tags: ['React', 'IoT', 'Firebase', 'ChakraUI'],
         githubUrl: 'https://github.com/Dariohg/Free-Garden-front.git',
         liveUrl: '#',
+        featured: true,
+        category: 'IoT'
     },
     {
         title: 'Bovara',
@@ -53,18 +59,27 @@ const PROJECTS = [
         tags: ['React Native', 'Firebase', 'Redux', 'Node.js'],
         githubUrl: 'https://github.com/Dariohg/Bovara.git',
         liveUrl: '#',
+        category: 'Mobile App'
     },
 ];
 
 // Componente de tarjeta de proyecto mejorado
-const ProjectCard = ({ title, description, image, tags, githubUrl, liveUrl }) => {
+const ProjectCard = ({ title, description, image, tags, githubUrl, liveUrl, featured, category }) => {
     const [isHovered, setIsHovered] = React.useState(false);
 
     const { ref, controls, variants } = useScrollAnimation({
         threshold: 0.2,
         animation: {
-            hidden: { opacity: 0, y: 50 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
+            hidden: { opacity: 0, y: 50, scale: 0.95 },
+            visible: {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                transition: {
+                    duration: 0.6,
+                    ease: [0.6, -0.05, 0.01, 0.99]
+                }
+            }
         }
     });
 
@@ -78,7 +93,7 @@ const ProjectCard = ({ title, description, image, tags, githubUrl, liveUrl }) =>
             onMouseLeave={() => setIsHovered(false)}
             position="relative"
             bg="white"
-            borderRadius="xl"
+            borderRadius="2xl"
             overflow="hidden"
             boxShadow="lg"
             transition="all 0.3s ease-in-out"
@@ -87,8 +102,48 @@ const ProjectCard = ({ title, description, image, tags, githubUrl, liveUrl }) =>
                 boxShadow: '2xl',
             }}
         >
+            {featured && (
+                <Box
+                    position="absolute"
+                    top="20px"
+                    right="20px"
+                    zIndex="2"
+                >
+                    <Badge
+                        colorScheme="yellow"
+                        variant="solid"
+                        px={3}
+                        py={1}
+                        borderRadius="full"
+                        fontSize="xs"
+                        textTransform="uppercase"
+                        letterSpacing="wider"
+                    >
+                        Destacado
+                    </Badge>
+                </Box>
+            )}
+
             {/* Contenedor de imagen con overlay */}
             <Box position="relative" overflow="hidden" height="240px">
+                <Box
+                    position="absolute"
+                    top="20px"
+                    left="20px"
+                    zIndex="2"
+                >
+                    <Badge
+                        colorScheme="beige"
+                        variant="subtle"
+                        px={3}
+                        py={1}
+                        borderRadius="full"
+                        fontSize="xs"
+                    >
+                        {category}
+                    </Badge>
+                </Box>
+
                 <Image
                     src={image}
                     alt={title}
@@ -129,6 +184,7 @@ const ProjectCard = ({ title, description, image, tags, githubUrl, liveUrl }) =>
                         aria-label="Ver código en GitHub"
                         icon={<FiGithub />}
                         size="lg"
+                        variant="solid"
                         colorScheme="whiteAlpha"
                         bg="white"
                         color="gray.800"
@@ -145,6 +201,7 @@ const ProjectCard = ({ title, description, image, tags, githubUrl, liveUrl }) =>
                             aria-label="Visitar sitio web"
                             icon={<FiExternalLink />}
                             size="lg"
+                            variant="solid"
                             colorScheme="whiteAlpha"
                             bg="white"
                             color="gray.800"
@@ -205,6 +262,26 @@ const ProjectCard = ({ title, description, image, tags, githubUrl, liveUrl }) =>
                     ))}
                 </HStack>
             </Box>
+
+            {/* Decoración de esquina */}
+            <Box
+                position="absolute"
+                bottom="0"
+                right="0"
+                width="80px"
+                height="80px"
+                opacity="0.05"
+            >
+                <Box
+                    position="absolute"
+                    bottom="-40px"
+                    right="-40px"
+                    width="80px"
+                    height="80px"
+                    borderRadius="full"
+                    bg="beige.500"
+                />
+            </Box>
         </MotionBox>
     );
 };
@@ -233,54 +310,78 @@ const Projects = () => {
             position="relative"
             overflow="hidden"
         >
+            {/* Patrón de fondo */}
+            <Box
+                position="absolute"
+                top="0"
+                left="0"
+                right="0"
+                bottom="0"
+                opacity="0.03"
+                bgImage={`
+                    linear-gradient(30deg, beige.200 12%, transparent 12.5%, transparent 87%, beige.200 87.5%, beige.200),
+                    linear-gradient(150deg, beige.200 12%, transparent 12.5%, transparent 87%, beige.200 87.5%, beige.200),
+                    linear-gradient(30deg, beige.200 12%, transparent 12.5%, transparent 87%, beige.200 87.5%, beige.200),
+                    linear-gradient(150deg, beige.200 12%, transparent 12.5%, transparent 87%, beige.200 87.5%, beige.200)
+                `}
+                bgSize="80px 140px"
+                bgPosition="0 0, 0 0, 40px 70px, 40px 70px"
+            />
+
             {/* Elementos decorativos de fondo */}
             <Box
                 position="absolute"
-                top="10%"
-                left="-5%"
-                width="200px"
-                height="200px"
+                top="5%"
+                left="-10%"
+                width="400px"
+                height="400px"
                 borderRadius="full"
                 bg="beige.200"
                 opacity="0.1"
-                filter="blur(40px)"
+                filter="blur(60px)"
             />
             <Box
                 position="absolute"
-                bottom="20%"
+                bottom="10%"
                 right="-5%"
                 width="300px"
                 height="300px"
                 borderRadius="full"
                 bg="beige.300"
                 opacity="0.1"
-                filter="blur(60px)"
+                filter="blur(80px)"
             />
 
             <Container maxW="container.xl" position="relative">
                 <VStack spacing={4} mb={16} align="center">
-                    <Heading
-                        as="h2"
-                        size="2xl"
-                        textAlign="center"
-                        color="gray.800"
-                        fontWeight="bold"
-                        letterSpacing="-0.02em"
-                        position="relative"
-                        _after={{
-                            content: '""',
-                            position: 'absolute',
-                            bottom: '-10px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            width: '60px',
-                            height: '4px',
-                            bg: 'beige.500',
-                            borderRadius: 'full'
-                        }}
+                    <MotionBox
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
                     >
-                        Proyectos
-                    </Heading>
+                        <Heading
+                            as="h2"
+                            size="2xl"
+                            textAlign="center"
+                            color="gray.800"
+                            fontWeight="bold"
+                            letterSpacing="-0.02em"
+                            position="relative"
+                            _after={{
+                                content: '""',
+                                position: 'absolute',
+                                bottom: '-10px',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                width: '60px',
+                                height: '4px',
+                                bg: 'beige.500',
+                                borderRadius: 'full'
+                            }}
+                        >
+                            Proyectos
+                        </Heading>
+                    </MotionBox>
                     <Text
                         fontSize="xl"
                         textAlign="center"
@@ -288,7 +389,7 @@ const Projects = () => {
                         color="gray.600"
                         mt={4}
                     >
-                        Estos son los proyectos en los que he trabajado recientemente.
+                        Una selección de mis proyectos más recientes y destacados.
                     </Text>
                 </VStack>
 
@@ -304,6 +405,40 @@ const Projects = () => {
                         ))}
                     </SimpleGrid>
                 </MotionBox>
+
+                {/* Decoración adicional */}
+                <Flex
+                    justify="center"
+                    mt={16}
+                    position="relative"
+                    _before={{
+                        content: '""',
+                        position: 'absolute',
+                        top: '50%',
+                        left: '0',
+                        right: '0',
+                        height: '1px',
+                        bg: 'beige.200',
+                        transform: 'translateY(-50%)'
+                    }}
+                >
+                    <Box
+                        bg="beige.50"
+                        px={6}
+                        position="relative"
+                        zIndex={1}
+                    >
+                        <Text
+                            color="beige.600"
+                            fontSize="sm"
+                            textTransform="uppercase"
+                            letterSpacing="wider"
+                            fontWeight="semibold"
+                        >
+                            Más proyectos próximamente
+                        </Text>
+                    </Box>
+                </Flex>
             </Container>
         </Box>
     );
